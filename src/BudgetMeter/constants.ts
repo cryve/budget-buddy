@@ -1,0 +1,8 @@
+export const INDICATION_DANGER = 'DANGER';
+export const INDICATION_DRAINING = 'DRAINING';
+export const INDICATION_WARNING = 'WARNING';
+export const INDICATION_SAFE = 'SAFE';
+
+export const THRESHOLD_DANGER = 10;
+export const THRESHOLD_DRAINING = 20;
+export const THRESHOLD_WARNING = 40;

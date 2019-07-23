@@ -1,0 +1,16 @@
+# output
+/.cache
+/.coverage
+build/
+dist/
+*.map
+
+# dependencies
+/node_modules
+
+# pouchdb
+log.txt
+config.json
+
+# yarn
+yarn-error.log
