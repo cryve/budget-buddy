@@ -29,6 +29,12 @@ class EditTransactionForm extends Form<IProps, {}> {
     });
   }
 
+  public handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      this.handleSubmit();
+    }
+  }
+
   render() {
     return (
       <tr>
@@ -39,6 +45,7 @@ class EditTransactionForm extends Form<IProps, {}> {
             onChange={this.handleInputChange}
             onBlur={this.handleTextInputBlur}
             name="description"
+            onKeyDown={this.handleKeyDown}
           />
         </td>
         <td>
@@ -49,6 +56,7 @@ class EditTransactionForm extends Form<IProps, {}> {
             name="amount"
             type="number"
             step="0.01"
+            onKeyDown={this.handleKeyDown}
           />
         </td>
         <td>
@@ -56,9 +64,9 @@ class EditTransactionForm extends Form<IProps, {}> {
           <Icon name="cancel" onClick={this.props.cancel}/>
         </td>
       </tr>
-      );
-    }
+    );
   }
+}
 
 const mapDispatch = (dispatchEvent: RematchDispatch<models>) => ({
   updateTransaction: dispatchEvent.transactions.updateAsync,
