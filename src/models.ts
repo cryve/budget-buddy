@@ -105,7 +105,7 @@ export const budgets = createModel({
         const db = await getDatabase();
         const budgetDoc = await db.collections.budgets.findOne(id).exec();
         const budgetWithSameTitle = await db.collections.budgets.findOne().where('title').eq(title).exec();
-        if (budgetWithSameTitle && budgetWithSameTitle.get('id') === budgetDoc.get('id')) {
+        if (budgetWithSameTitle && budgetWithSameTitle.get('_id') !== budgetDoc.get('_id')) {
           throw new Error('title already used');
         }
         budgetDoc.update({$set: {
