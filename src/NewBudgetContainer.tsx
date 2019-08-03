@@ -1,21 +1,10 @@
-import * as React from 'react';
-import { InputOnChangeData } from 'semantic-ui-react';
-import { connect } from 'react-redux';
 import { RematchDispatch, RematchRootState } from '@rematch/core';
-import { models } from './store';
-import NewBudget from './NewBudget';
-import { convertToCents } from './helpers';
+import * as React from 'react';
+import { connect } from 'react-redux';
 import AbstractForm from './Form';
-
-const mapState = (state: RematchRootState<models>) => ({
-  budgets: state.budgets,
-  form: state.newBudgetForm,
-});
-
-const mapDispatch = (dispatchEvent: RematchDispatch<models>) => ({
-  createBudget: dispatchEvent.budgets.createAsync,
-  initializeForm: dispatchEvent.newBudgetForm.initialize,
-});
+import { convertToCents } from './helpers';
+import NewBudget from './NewBudget';
+import { models } from './store';
 
 interface INewBudgetProps
   extends Partial<ReturnType<typeof mapState>>, Partial<ReturnType<typeof mapDispatch>> {}
@@ -41,35 +30,18 @@ class NewBudgetContainer extends AbstractForm<INewBudgetProps, IState> {
     this.state = { ...initialState };
   }
 
-  public componentWillReceiveProps(props: INewBudgetProps) {
-    if (props.form.submitted) {
-      this.setState(initialState);
-    }
-  }
-
-  public handleInputChange = (
-    event: React.FormEvent<HTMLInputElement>,
-    data: InputOnChangeData
-  ) => {
-    event.preventDefault();
-
-    if (this.props.form.submitted) {
-      this.props.initializeForm();
-    }
-
-    const stateKey: keyof IState = data.name;
-    const stateUpdate = {};
-    stateUpdate[stateKey] = data.value;
-    this.setState(stateUpdate);
-  }
-
-  public handleSubmit = () => {
+  public handleSubmit = async () => {
     if (this.state.title) {
-      this.props.createBudget({
+      const result = await this.props.createBudget({
         balance: convertToCents (this.state.initialBalance),
         targetBalance: convertToCents(this.state.targetBalance),
         title: this.state.title,
       });
+      if (result) {
+        this.props.submitSuccess();
+        this.setState(initialState);
+        this.props.initializeForm();
+      }
     }
   }
 
@@ -88,5 +60,16 @@ class NewBudgetContainer extends AbstractForm<INewBudgetProps, IState> {
     );
   }
 }
+
+const mapState = (state: RematchRootState<models>) => ({
+  budgets: state.budgets,
+  form: state.newBudgetForm,
+});
+
+const mapDispatch = (dispatchEvent: RematchDispatch<models>) => ({
+  createBudget: dispatchEvent.budgets.createAsync,
+  submitSuccess: dispatchEvent.newBudgetForm.submitSuccess,
+  initializeForm: dispatchEvent.newBudgetForm.initialize,
+});
 
 export default connect(mapState, mapDispatch)(NewBudgetContainer);

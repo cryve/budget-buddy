@@ -87,8 +87,7 @@ export const budgets = createModel({
     async createAsync(payload: IBudget) {
       try {
         const db = await getDatabase();
-        await db.collections.budgets.insert(payload);
-        dispatchEvent.newBudgetForm.submitSuccess();
+        return await db.collections.budgets.insert(payload);
       } catch (error) {
         if (error.message === 'title already used') {
           dispatchEvent.newBudgetForm.submitError({
