@@ -49,7 +49,7 @@
     "@rematch/select": "^2.0.0",
     "@types/react-redux": "^6.0.6",
     "babel-polyfill": "^6.26.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "pouchdb-adapter-http": "^7.0.0",
     "pouchdb-adapter-idb": "^7.0.0",
     "pouchdb-replication": "^7.0.0",
